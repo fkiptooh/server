@@ -28,9 +28,9 @@ exports.remove = async(req, res) => {
 };
 
 exports.update = async(req, res) => {
-    const {name} = req.body;
+    const {name, parent} = req.body;
     try{
-        const updated = await Subcategory.findOneAndUpdate({slug: req.params.slug}, {name, slug: slugify(name)}, {new: true});
+        const updated = await Subcategory.findOneAndUpdate({slug: req.params.slug}, {name, parent, slug: slugify(name)}, {new: true});
         res.json(updated);
     }catch(err){
         res.status(400).send("Subcategory update failed");
