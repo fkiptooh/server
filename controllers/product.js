@@ -17,6 +17,11 @@ exports.create=async(req, res)=>{
 }
 
 exports.listAll = async(req, res) =>{
-    let products = await Product.find({});
+    let products = await Product.find({})
+    .limit(req.params.count)
+    .populate('category')
+    .populate('subcategory')
+    .sort([['createdAt', 'desc']])
+    .exec()
     res.json(products)
 }
