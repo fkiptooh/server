@@ -1,23 +1,23 @@
 const express = require("express");
-
 const router = express.Router();
 
 // middlewares
 const { authCheck, adminCheck } = require("../middlewares/auth");
 
 // controller
-const { create, listAll, remove, read, update } = require("../controllers/product");
-// const { route } = require("./auth");
+const {
+  create,
+  listAll,
+  remove,
+  read,
+  update,
+} = require("../controllers/product");
 
-//routes
-
+// routes
 router.post("/product", authCheck, adminCheck, create);
-router.get("/products/:count", listAll); // products/10 so we cant break the site/ server when quering the database.
+router.get("/products/:count", listAll); // products/100
 router.delete("/product/:slug", authCheck, adminCheck, remove);
 router.get("/product/:slug", read);
-router.put("/product/:slug", adminCheck, authCheck, update);
-
-
-
+router.put("/product/:slug", authCheck, adminCheck, update);
 
 module.exports = router;
