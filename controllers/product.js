@@ -87,28 +87,28 @@ exports.update = async (req, res) => {
 // }
 
 
-// with pagination
-exports.list = async (req, res)=> {
+// WITH PAGINATION
+exports.list = async (req, res) => {
+  // console.table(req.body);
   try {
-    // createdAt, updatedAt, desc/asc 3..
+    // createdAt/updatedAt, desc/asc, 3
     const { sort, order, page } = req.body;
     const currentPage = page || 1;
-    const perPage = 3; // 3 
+    const perPage = 3; // 3
+
     const products = await Product.find({})
-    .skip((currentPage - 1) * perPage) // if lets say a user press the option 3 {(3-1)*3) products will be skipped and the next set of products will be rendered
-    .populate('category')
-    .populate('subcategory')
-    .sort([[sort, order]])
-    .limit(perPage)
-    .exec();
+      .skip((currentPage - 1) * perPage)
+      .populate("category")
+      .populate("subcategory")
+      .sort([[sort, order]])
+      .limit(perPage)
+      .exec();
 
     res.json(products);
-
-  }
-  catch(err) {
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
 exports.productsCount = async(req, res) => {
   const total = await Product.find({}).estimatedDocumentCount().exec();
