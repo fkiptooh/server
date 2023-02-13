@@ -66,15 +66,40 @@ exports.update = async (req, res) => {
   }
 };
 
+// Without pagination
+// exports.list = async (req, res)=> {
+//   try {
+//     // createdAt, updatedAt, desc/asc 3..
+//     const { sort, order, limit } = req.body;
+//     const products = await Product.find({})
+//     .populate('category')
+//     .populate('subcategory')
+//     .sort([[sort, order]])
+//     .limit(limit)
+//     .exec();
+
+//     res.json(products);
+
+//   }
+//   catch(err) {
+//     console.log(err);
+//   }
+// }
+
+
+// with pagination
 exports.list = async (req, res)=> {
   try {
     // createdAt, updatedAt, desc/asc 3..
-    const { sort, order, limit } = req.body;
+    const { sort, order, page } = req.body;
+    const currentPage = page || 1;
+    const perPage = 3; // 3 
     const products = await Product.find({})
+    .skip((currentPage - 1) * perPage) // if lets say a user press the option 3 {(3-1)*3) products will be skipped and the next set of products will be rendered
     .populate('category')
     .populate('subcategory')
     .sort([[sort, order]])
-    .limit(limit)
+    .limit(perPage)
     .exec();
 
     res.json(products);
