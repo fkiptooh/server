@@ -71,7 +71,7 @@ exports.list = async (req, res)=> {
     // createdAt, updatedAt, desc/asc 3..
     const { sort, order, limit } = req.body;
     const products = await Product.find({})
-    .populate('categoty')
+    .populate('category')
     .populate('subcategory')
     .sort([[sort, order]])
     .limit(limit)
@@ -83,4 +83,10 @@ exports.list = async (req, res)=> {
   catch(err) {
     console.log(err);
   }
+}
+
+exports.productsCount = async(req, res) => {
+  const total = await Product.find({}).estimatedDocumentCount().exec();
+
+  res.json(total);
 }
