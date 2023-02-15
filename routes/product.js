@@ -26,6 +26,6 @@ router.put("/product/:slug", authCheck, adminCheck, update);
 router.post("/products", list)
 
 // star rating route
-router.put("/product/star/:productId", productStar);
+router.put("/product/star/:productId", authCheck, productStar);
 
 module.exports = router;

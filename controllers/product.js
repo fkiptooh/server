@@ -117,33 +117,41 @@ exports.productsCount = async(req, res) => {
   res.json(total);
 }
 
-exports.productStar = async(req, res)=> {
+exports.productStar = async(req, res) => {
   const product = await Product.findById(req.params.productId).exec();
-  const user = await User.findOne({email: req.user.email}).exec();
 
-  const {star} = req.body;
+  // Check that req.user is defined before trying to use it
+  if (req.user) {
+    const user = await User.findOne({email: req.user.email}).exec();
+    console.log(user);
 
-  // Checking if the currently logged in user has left the rating on the product before;
-  let existingRatingObject = product.ratings.find((ele)=> ele.postedBy.toString() === user._id.toString());
+    const {star} = req.body;
 
-  // if user havent left rating yet, push the new ratings
-  if (existingRatingObject === undefined){
-    let ratingAdded = await Product.findByIdAndUpdate(product._id,
-        {$push: { ratings: { star, postedBy : user._id}}},
+    // Checking if the currently logged in user has left the rating on the product before;
+    let existingRatingObject = product.ratings.find((ele) => ele.postedBy == user._id);
+
+    // if user haven't left rating yet, push the new ratings
+    if (existingRatingObject === undefined) {
+      let ratingAdded = await Product.findByIdAndUpdate(product._id,
+        {$push: { ratings: { star, postedBy: user._id } } },
         {new: true},
       ).exec();
-      console.log("Ratings added", ratingAdded)
+      console.log("Ratings added", ratingAdded);
       res.json(ratingAdded);
-  } else {
-     // if user had left rating initially, then update existing rating.
-     const ratingUpdated = await Product.updateOne({
-      ratings: { $eleMatch: existingRatingObject}
-     }, {$set: {"ratings.$.star": star}},
-     {new: true}).exec();
+    } else {
+       // if user had left rating initially, then update existing rating.
+       const ratingUpdated = await Product.updateOne({
+        ratings: { $eleMatch: existingRatingObject}
+       }, {$set: {"ratings.$.star": star}},
+       {new: true}).exec();
 
-     console.log("ratingUpdated", ratingUpdated);
+       console.log("ratingUpdated", ratingUpdated);
 
-     res.json(ratingUpdated);
-  }
- 
+       res.json(ratingUpdated);
+    }
+  } 
+  // else {
+  //   // handle the case where req.user is not defined
+  // }
 }
+
