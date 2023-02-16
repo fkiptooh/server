@@ -128,7 +128,7 @@ exports.productStar = async(req, res) => {
     const {star} = req.body;
 
     // Checking if the currently logged in user has left the rating on the product before;
-    let existingRatingObject = product.ratings.find((ele) => ele.postedBy == user._id);
+    let existingRatingObject = product.ratings.find((ele) => ele.postedBy.toString() === user._id.toString());
 
     // if user haven't left rating yet, push the new ratings
     if (existingRatingObject === undefined) {
@@ -141,7 +141,7 @@ exports.productStar = async(req, res) => {
     } else {
        // if user had left rating initially, then update existing rating.
        const ratingUpdated = await Product.updateOne({
-        ratings: { $eleMatch: existingRatingObject}
+        ratings: { $elemMatch: existingRatingObject}
        }, {$set: {"ratings.$.star": star}},
        {new: true}).exec();
 
@@ -150,8 +150,5 @@ exports.productStar = async(req, res) => {
        res.json(ratingUpdated);
     }
   } 
-  // else {
-  //   // handle the case where req.user is not defined
-  // }
 }
 
