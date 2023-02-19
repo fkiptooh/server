@@ -40,7 +40,7 @@ exports.update = async(req, res) => {
 
 exports.read = async(req, res) => {
     let subcategory = await Subcategory.findOne({slug: req.params.slug}).exec();
-    let products = await Product.find({ subcategories: subcategory})
+    let products = await Product.find({ subcategory})
     .populate('category')
     .exec();
 

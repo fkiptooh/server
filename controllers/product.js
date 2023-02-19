@@ -1,6 +1,7 @@
 const Product = require("../models/product");
 const User = require('../models/user');
 const slugify = require("slugify");
+// const { query } = require("express");
 
 exports.create = async (req, res) => {
   try {
@@ -168,3 +169,15 @@ exports.listRelated = async (req, res) => {
   res.json(related);
 };
 
+const handleQuery =async(req, res, query) => {
+
+}
+
+exports.searchFilters = async(req, res)=> {
+  const { query } = req.body;
+  
+  if(query){
+    console.log("query", query);
+    await handleQuery(req, res, query);
+  }
+}
