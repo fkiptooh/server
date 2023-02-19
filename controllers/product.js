@@ -170,6 +170,11 @@ exports.listRelated = async (req, res) => {
 };
 
 const handleQuery =async(req, res, query) => {
+  const products = await Product.find({ $text: { $search: query}})
+  .populate('category', '_id name')
+  .populate('subcategory', '_id name')
+  .populate('ratings.postedBy', '_id name')
+  .exec();
 
 }
 
