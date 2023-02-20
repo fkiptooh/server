@@ -176,6 +176,7 @@ const handleQuery =async(req, res, query) => {
   .populate('ratings.postedBy', '_id name')
   .exec();
 
+  res.json(products);
 }
 
 exports.searchFilters = async(req, res)=> {
