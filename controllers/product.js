@@ -179,11 +179,35 @@ const handleQuery =async(req, res, query) => {
   res.json(products);
 }
 
+const handlePrice = async(req, res, price)=> {
+  try{
+  const products = await Product.find({
+    price: {
+      $gte : price[0],
+      $lte : price[1],
+    }
+  })
+  .populate('category', '_id name')
+  .populate('subcategory', '_id name')
+  .populate('ratings.postedBy', '_id name')
+  .exec();
+
+  res.json(products)
+} catch(err){
+  console.log(err)
+}
+}
+
 exports.searchFilters = async(req, res)=> {
-  const { query } = req.body;
+  const { query, price } = req.body;
   
   if(query){
     console.log("query", query);
     await handleQuery(req, res, query);
+  }
+
+  if(price){
+    console.log(`Price --->`, price)
+    await handlePrice(req, res, price);
   }
 }
