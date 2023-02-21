@@ -238,9 +238,48 @@ const handleStars=(req, res, stars)=>{
     });
   })
 };
+const handleSubcategory=async(req, res, subcategory)=>{
+  let products = await Product.find({subcategory})
+  .populate('category', '_id name')
+  .populate('subcategory', '_id name')
+  .populate('ratings.postedBy', '_id name')
+  .exec();
+
+  res.json(products)
+}
+
+const handleColor=async(req, res, color)=>{
+  let products = await Product.find({color})
+  populate('category', '_id name')
+  .populate('subcategory', '_id name')
+  .populate('ratings.postedBy', '_id name')
+  .exec();
+
+  res.json(products)
+}
+
+const handleBrand=async(req, res, brand)=>{
+  let products = await Product.find({brand})
+  populate('category', '_id name')
+  .populate('subcategory', '_id name')
+  .populate('ratings.postedBy', '_id name')
+  .exec();
+
+  res.json(products)
+}
+
+const handleShipping=async(req, res, shipping)=>{
+  let products = await Product.find({shipping})
+  populate('category', '_id name')
+  .populate('subcategory', '_id name')
+  .populate('ratings.postedBy', '_id name')
+  .exec();
+
+  res.json(products)
+}
 
 exports.searchFilters = async(req, res)=> {
-  const { query, price, category, stars } = req.body;
+  const { query, price, category, stars, subcategory, color, brand, shipping } = req.body;
   
   if(query){
     console.log("query", query);
@@ -258,5 +297,21 @@ exports.searchFilters = async(req, res)=> {
   if(stars){
     console.log(`Stars--->`, stars)
     await handleStars(req, res, stars)
+  }
+  if(subcategory){
+    console.log(`Subcategory --->`, subcategory)
+    await handleSubcategory(req, res, subcategory);
+  }
+  if(color){
+    console.log(`Color --->`, color)
+    await handleColor(req, res, color);
+  }
+  if(brand){
+    console.log(`Brand --->`, brand)
+    await handleBrand(req, res, brand);
+  }
+  if(shipping){
+    console.log(`Shipping --->`, shipping)
+    await handleShipping(req, res, shipping);
   }
 }
