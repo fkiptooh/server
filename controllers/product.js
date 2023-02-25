@@ -250,7 +250,7 @@ const handleSubcategory=async(req, res, subcategory)=>{
 
 const handleColor=async(req, res, color)=>{
   let products = await Product.find({color})
-  populate('category', '_id name')
+  .populate('category', '_id name')
   .populate('subcategory', '_id name')
   .populate('ratings.postedBy', '_id name')
   .exec();
@@ -260,7 +260,7 @@ const handleColor=async(req, res, color)=>{
 
 const handleBrand=async(req, res, brand)=>{
   let products = await Product.find({brand})
-  populate('category', '_id name')
+  .populate('category', '_id name')
   .populate('subcategory', '_id name')
   .populate('ratings.postedBy', '_id name')
   .exec();
@@ -270,7 +270,7 @@ const handleBrand=async(req, res, brand)=>{
 
 const handleShipping=async(req, res, shipping)=>{
   let products = await Product.find({shipping})
-  populate('category', '_id name')
+  .populate('category', '_id name')
   .populate('subcategory', '_id name')
   .populate('ratings.postedBy', '_id name')
   .exec();
