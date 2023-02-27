@@ -10,7 +10,8 @@ const {
          getUserCart, 
          emptyUserCart,  
          saveAddress,
-         applyCouponToUserCart
+         applyCouponToUserCart,
+         createOrder
         } = require("../controllers/user"); 
 
 router.post("/user/cart", authCheck, userCart); // save cart
@@ -21,6 +22,8 @@ router.post("/user/address", authCheck, saveAddress); //save address to db
 // coupon route
 
 router.post("/user/cart/coupon", authCheck, applyCouponToUserCart);
+
+router.post('/user/order', authCheck, createOrder);
 
 // router.get('/user', user);
 
